@@ -48,10 +48,12 @@ public class Downloader extends AsyncTask<Void, Void, Object> {
         pd.dismiss();
 
         if(data.toString().startsWith("Error")){
-            Toast.makeText(c, data.toString(), Toast.LENGTH_SHORT);
+            Toast.makeText(c, data.toString(), Toast.LENGTH_SHORT).show();
         }
         else{
             //Parsing
+            RSSParser parser = new RSSParser();
+            parser.parse((InputStream) data);
         }
     }
 

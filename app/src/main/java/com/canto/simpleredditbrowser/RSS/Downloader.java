@@ -15,14 +15,12 @@ public class Downloader extends AsyncTask<Void, Void, Object> {
 
     Context c;
     String urlAdress;
-    ListView listView;
 
     ProgressDialog pd;
 
-    public Downloader(Context c, String urlAdress, ListView listView) {
+    public Downloader(Context c, String urlAdress) {
         this.c = c;
         this.urlAdress = urlAdress;
-        this.listView = listView;
     }
 
     //Permet d'afficher un écran de chargement le temps de charger les données

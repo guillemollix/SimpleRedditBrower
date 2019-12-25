@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/toolbar_refresh"
+        android:icon="@drawable/ic_toolbar_refresh"
+        android:title="Refresh button"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/toolbar_menu1"
+    android:title="More button"
+    app:showAsAction="never"/>
+
+    <item android:id="@+id/toolbar_menu2"
+        android:title="More button"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/toolbar_menu3"
+        android:title="More button"
+        app:showAsAction="never"/>
+
+</menu>

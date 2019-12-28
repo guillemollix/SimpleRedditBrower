@@ -1,7 +1,6 @@
 package com.canto.simpleredditbrowser;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.canto.simpleredditbrowser.RSS.Downloader;
-import com.canto.simpleredditbrowser.model.Entry;
-import com.canto.simpleredditbrowser.model.Author;
 
-import java.util.List;
+public class FeedFragment extends Fragment {
 
-public class HomeFragment extends Fragment {
-
-    private final String TAG = "HomeFragment";
+    private final String TAG = "FeedFragment";
 
     @Nullable
     @Override
@@ -28,8 +23,8 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home , container, false);
         ListView listView = (ListView) view.findViewById(R.id.cardList);
 
-        Downloader downloader = new Downloader(getContext(), "http://www.reddit.com/.rss", listView);
-        downloader.execute();
+        Downloader downloader = new Downloader();
+        downloader.execute("https://www.reddit.com/.rss");
 
         return view;
     }

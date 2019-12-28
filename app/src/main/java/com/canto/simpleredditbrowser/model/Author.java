@@ -1,5 +1,7 @@
 package com.canto.simpleredditbrowser.model;
 
+import androidx.annotation.NonNull;
+
 public class Author {
 
     String name;
@@ -21,4 +23,9 @@ public class Author {
         this.uri = uri;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }

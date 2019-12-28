@@ -55,6 +55,15 @@ public class Entry {
     @NonNull
     @Override
     public String toString() {
-        return this.title;
+
+        String result;
+        result = "Nouvelle entry : \n";
+        result += "Author : " + this.getAuthor() + "\n";
+        result += "Updated : " + this.getUpdated() + "\n";
+        result += "Title : " + this.getTitle() + "\n";
+        result += "Uri : " + this.getLink() + "\n";
+        result += "Thumbnail URL : " + this.getThumbnail() + "\n";
+        return result;
+
     }
 }

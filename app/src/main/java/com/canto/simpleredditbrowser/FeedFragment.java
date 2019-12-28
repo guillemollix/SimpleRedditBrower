@@ -24,7 +24,7 @@ public class FeedFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.cardList);
 
         Downloader downloader = new Downloader();
-        downloader.execute("https://www.reddit.com/.rss");
+        downloader.execute("");
 
         return view;
     }

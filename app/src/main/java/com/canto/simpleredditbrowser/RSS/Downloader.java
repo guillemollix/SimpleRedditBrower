@@ -15,10 +15,12 @@ import java.net.URL;
 public class Downloader extends AsyncTask<String, Integer, Entry[]> {
 
     private final String TAG = "Downloader";
+    private final String BASE_URL = "https://www.reddit.com/";
+    private final String END_URL = ".rss";
 
     @Override
     protected Entry[] doInBackground(String... strings) {
-        String urlString = strings[0];
+        String urlString = BASE_URL + strings[0] + END_URL;
         InputStream is;
 
         try{
@@ -36,7 +38,7 @@ public class Downloader extends AsyncTask<String, Integer, Entry[]> {
             Log.d(TAG, "Code de réponse de la connexion : " + response);
             is = connection.getInputStream();
 
-            //Transformation de l'InputStream en String
+            /*//Transformation de l'InputStream en String
             int bufferSize = 1024;
             byte[] buffer = new byte[bufferSize];
             ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -50,7 +52,11 @@ public class Downloader extends AsyncTask<String, Integer, Entry[]> {
             os.close();
 
             String body = new String(os.toByteArray(), "UTF-8");
-            Log.d(TAG, "Contenu du body : " + body);
+            Log.d(TAG, "Contenu du body : " + body);*/
+
+            //Parsing
+            RSSParser parser = new RSSParser();
+            parser.parse(is);
 
 
         }catch (MalformedURLException e) {

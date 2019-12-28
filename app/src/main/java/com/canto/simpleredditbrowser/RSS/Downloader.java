@@ -35,7 +35,7 @@ public class Downloader extends AsyncTask<String, Integer, List<Entry>> {
     @Override
     protected List<Entry> doInBackground(String... strings) {
         String urlString = BASE_URL + strings[0] + END_URL;
-        InputStream is;
+        InputStream is = null;
 
         try{
             //Initialisation de la connexion
@@ -50,7 +50,20 @@ public class Downloader extends AsyncTask<String, Integer, List<Entry>> {
             //Récupération du code de réponse et du corps de la réponse
             int response = connection.getResponseCode();
             Log.d(TAG, "Code de réponse de la connexion : " + response);
-            is = connection.getInputStream();
+
+            if(response == HttpURLConnection.HTTP_OK)is = connection.getInputStream();
+
+            if(response == HttpURLConnection.HTTP_MOVED_PERM || response == HttpURLConnection.HTTP_MOVED_TEMP || response == HttpURLConnection.HTTP_SEE_OTHER){
+                String newUrl = connection.getHeaderField("Location");
+                url = new URL(newUrl);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setReadTimeout(15000);
+                connection.setConnectTimeout(15000);
+                connection.setRequestMethod("GET");
+                connection.setDoInput(true);
+                connection.connect();
+                is = connection.getInputStream();
+            }
 
             /*//Transformation de l'InputStream en String
             int bufferSize = 1024;

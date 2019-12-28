@@ -15,6 +15,11 @@ import com.canto.simpleredditbrowser.RSS.Downloader;
 public class FeedFragment extends Fragment {
 
     private final String TAG = "FeedFragment";
+    private String subName;
+
+    public FeedFragment(String subName) {
+        this.subName = subName;
+    }
 
     @Nullable
     @Override
@@ -24,9 +29,12 @@ public class FeedFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.cardList);
 
         Downloader downloader = new Downloader(this.getContext(), listView);
-        downloader.execute("");
+        downloader.execute(subName);
 
         return view;
     }
 
+    public String getSubName() {
+        return subName;
+    }
 }

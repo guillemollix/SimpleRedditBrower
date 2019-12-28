@@ -8,6 +8,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private final String TAG = "MainActivity";
     private DrawerLayout drawer;
 
     @Override
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Rends la toolbar en haut de l'écran réactive
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Simple Reddit Browser");
 
 
         drawer = findViewById(R.id.drawer_layout);
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Affiche le fragment d'accueil par défaut
         if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment("")).commit();
             navigationView.setCheckedItem(R.id.menu_home);
         }
 
@@ -49,9 +52,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Gère l'ouverture des fragments en cliquant sur les boutons de la barre de navigation
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        Toolbar toolbar = findViewById(R.id.toolbar);
         switch(menuItem.getItemId()){
             case R.id.menu_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment("")).commit();
+                toolbar.setTitle("Simple Reddit Browser");
+                break;
+
+            case R.id.menu_all:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment("r/all")).commit();
+                toolbar.setTitle("r/all");
+                break;
+
+            case R.id.menu_random:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment("r/random")).commit();
+                toolbar.setTitle("r/random");
                 break;
         }
 
@@ -84,8 +99,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Mise en fonctionnement des boutons
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
+        switch (item.getItemId()){
+            case R.id.toolbar_refresh:
+                String title = String.valueOf(toolbar.getTitle());
+                Log.d(TAG, title +"a");
+                if(title == "Simple Reddit Browser")getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment("")).commit();
+                else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment(title)).commit();
+                }
         }
 
 

@@ -23,7 +23,7 @@ public class FeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home , container, false);
         ListView listView = (ListView) view.findViewById(R.id.cardList);
 
-        Downloader downloader = new Downloader();
+        Downloader downloader = new Downloader(this.getContext(), listView);
         downloader.execute("");
 
         return view;

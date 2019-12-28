@@ -81,7 +81,7 @@ public class RSSParser{
                         }
 
                         if (tagName.equalsIgnoreCase("content")) {
-                            Log.d(TAG, text);
+                            //Log.d(TAG, text);
                             String[] splits = text.split("\"");
                             for(String split : splits){
                                 if(split.contains("/comments/"))if(entry != null)entry.setLink(split);

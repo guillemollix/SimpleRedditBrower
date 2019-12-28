@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     //Mise en fonctionnement des boutons
-
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){

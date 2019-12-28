@@ -1,8 +1,12 @@
 package com.canto.simpleredditbrowser.RSS;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ListView;
 
+import com.canto.simpleredditbrowser.ListAdapter;
+import com.canto.simpleredditbrowser.R;
 import com.canto.simpleredditbrowser.model.Entry;
 
 import java.io.ByteArrayOutputStream;
@@ -11,15 +15,25 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
-public class Downloader extends AsyncTask<String, Integer, Entry[]> {
+public class Downloader extends AsyncTask<String, Integer, List<Entry>> {
 
     private final String TAG = "Downloader";
     private final String BASE_URL = "https://www.reddit.com/";
     private final String END_URL = ".rss";
+    private List<Entry> entrys;
+    private Context context;
+    private ListView lv;
+
+    public Downloader(Context c, ListView lv){
+        this.context = c;
+        this.lv = lv;
+    }
+
 
     @Override
-    protected Entry[] doInBackground(String... strings) {
+    protected List<Entry> doInBackground(String... strings) {
         String urlString = BASE_URL + strings[0] + END_URL;
         InputStream is;
 
@@ -56,7 +70,7 @@ public class Downloader extends AsyncTask<String, Integer, Entry[]> {
 
             //Parsing
             RSSParser parser = new RSSParser();
-            parser.parse(is);
+            entrys = parser.parse(is);
 
 
         }catch (MalformedURLException e) {
@@ -65,6 +79,12 @@ public class Downloader extends AsyncTask<String, Integer, Entry[]> {
             e.printStackTrace();
         }
 
-        return null;
+        return entrys;
+    }
+
+    @Override
+    protected void onPostExecute(List<Entry> entrys) {
+        ListAdapter adapter = new ListAdapter(context, R.layout.card_view_layout, entrys);
+        lv.setAdapter(adapter);
     }
 }

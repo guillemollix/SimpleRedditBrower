@@ -7,11 +7,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -27,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         //Rends la toolbar en haut de l'écran réactive
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Simple Reddit Browser");
 
@@ -46,6 +55,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment("")).commit();
             navigationView.setCheckedItem(R.id.menu_home);
         }
+
+        //Rend utilisable la barre de recherche du Drawer
+        Button searchButton = (Button) navigationView.getHeaderView(0).findViewById(R.id.search_button);
+        final EditText searchBar = navigationView.getHeaderView(0).findViewById(R.id.search_bar);
+        searchButton.setOnClickListener(new View.OnClickListener() { //Avec le bouton
+            @Override
+            public void onClick(View v) {
+                String subSearched = "r/" + searchBar.getText();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment(subSearched)).commit();
+                toolbar.setTitle(subSearched);
+            }
+        });
+        searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                    String subSearched = "r/" + searchBar.getText();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment(subSearched)).commit();
+                    toolbar.setTitle(subSearched);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+
+
 
     }
 

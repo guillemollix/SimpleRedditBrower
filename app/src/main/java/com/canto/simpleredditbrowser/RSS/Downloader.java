@@ -51,8 +51,11 @@ public class Downloader extends AsyncTask<String, Integer, List<Entry>> {
             int response = connection.getResponseCode();
             Log.d(TAG, "Code de réponse de la connexion : " + response);
 
+
+            //Le subreddit à atteindre existe
             if(response == HttpURLConnection.HTTP_OK)is = connection.getInputStream();
 
+            //Redirection d'un sub à un autre comme dans le cas de r/random
             if(response == HttpURLConnection.HTTP_MOVED_PERM || response == HttpURLConnection.HTTP_MOVED_TEMP || response == HttpURLConnection.HTTP_SEE_OTHER){
                 String newUrl = connection.getHeaderField("Location");
                 url = new URL(newUrl);
@@ -63,6 +66,11 @@ public class Downloader extends AsyncTask<String, Integer, List<Entry>> {
                 connection.setDoInput(true);
                 connection.connect();
                 is = connection.getInputStream();
+            }
+
+            //Le sub n'existe pas ou refuse la connexion
+            if(Integer.toString(response).startsWith("4")){
+                return null;
             }
 
             /*//Transformation de l'InputStream en String
@@ -97,7 +105,18 @@ public class Downloader extends AsyncTask<String, Integer, List<Entry>> {
 
     @Override
     protected void onPostExecute(List<Entry> entrys) {
-        ListAdapter adapter = new ListAdapter(context, R.layout.card_view_layout, entrys);
-        lv.setAdapter(adapter);
+
+        if(entrys != null) {
+            ListAdapter adapter = new ListAdapter(context, R.layout.card_view_layout, entrys);
+            lv.setAdapter(adapter);
+        }
+        else{
+            Entry entry = new Entry();
+            entry.setTitle("Aucun post à afficher :(");
+            entry.setThumbnail("https://fcw.com/-/media/GIG/FCWNow/2015/05/0511reddit_user.PNG");
+            entrys.add(entry);
+            ListAdapter adapter = new ListAdapter(context, R.layout.card_view_layout, entrys);
+            lv.setAdapter(adapter);
+        }
     }
 }

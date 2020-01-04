@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ public class FeedFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_home , container, false);
         ListView listView = (ListView) view.findViewById(R.id.cardList);
+
 
         Downloader downloader = new Downloader(this.getContext(), listView);
         downloader.execute(subName);

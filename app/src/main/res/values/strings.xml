@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Simple Reddit Browser</string>
 
+    <string name="entry_link">link</string>
+    <string name="entry_title">title</string>
+    <string name="entry_updated">updated</string>
+    <string name="entry_author">author</string>
+    <string name="entry_thumbnail">thumbnail</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

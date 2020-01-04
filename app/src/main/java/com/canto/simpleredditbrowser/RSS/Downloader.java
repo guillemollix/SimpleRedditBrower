@@ -1,11 +1,16 @@
 package com.canto.simpleredditbrowser.RSS;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.canto.simpleredditbrowser.CommentActivity;
 import com.canto.simpleredditbrowser.ListAdapter;
+import com.canto.simpleredditbrowser.MainActivity;
 import com.canto.simpleredditbrowser.R;
 import com.canto.simpleredditbrowser.model.Entry;
 
@@ -30,7 +35,6 @@ public class Downloader extends AsyncTask<String, Integer, List<Entry>> {
         this.context = c;
         this.lv = lv;
     }
-
 
     @Override
     protected List<Entry> doInBackground(String... strings) {
@@ -104,11 +108,28 @@ public class Downloader extends AsyncTask<String, Integer, List<Entry>> {
     }
 
     @Override
-    protected void onPostExecute(List<Entry> entrys) {
+    protected void onPostExecute(final List<Entry> entrys) {
 
         if(entrys != null) {
             ListAdapter adapter = new ListAdapter(context, R.layout.card_view_layout, entrys);
             lv.setAdapter(adapter);
+
+
+            //Ajout de la possibilité de cliquer sur les posts pour lire les commentaires du post
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //Log.d(TAG, "OnItemClick : Clicked :" + entrys.get(position));
+                    Intent intent = new Intent(context, CommentActivity.class);
+                    intent.putExtra("@string/entry_link", entrys.get(position).getLink());
+                    intent.putExtra("@string/entry_title", entrys.get(position).getTitle());
+                    intent.putExtra("@string/entry_updated", entrys.get(position).getUpdated());
+                    intent.putExtra("@string/entry_author", entrys.get(position).getAuthor().toString());
+                    intent.putExtra("@string/entry_thumbnail", entrys.get(position).getThumbnail());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
         }
         else{
             Entry entry = new Entry();

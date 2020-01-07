@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.canto.simpleredditbrowser.RSS.Downloader;
+import com.canto.simpleredditbrowser.RSS.SubDownloader;
 
 public class FeedFragment extends Fragment {
 
@@ -30,7 +29,7 @@ public class FeedFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.cardList);
 
 
-        Downloader downloader = new Downloader(this.getContext(), listView);
+        SubDownloader downloader = new SubDownloader(this.getContext(), listView);
         downloader.execute(subName);
 
         return view;

@@ -10,11 +10,9 @@ import android.widget.ListView;
 
 import com.canto.simpleredditbrowser.CommentActivity;
 import com.canto.simpleredditbrowser.ListAdapter;
-import com.canto.simpleredditbrowser.MainActivity;
 import com.canto.simpleredditbrowser.R;
 import com.canto.simpleredditbrowser.model.Entry;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -22,16 +20,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class Downloader extends AsyncTask<String, Integer, List<Entry>> {
+public class SubDownloader extends AsyncTask<String, Integer, List<Entry>> {
 
-    private final String TAG = "Downloader";
+    private final String TAG = "SubDownloader";
     private final String BASE_URL = "https://www.reddit.com/";
     private final String END_URL = ".rss";
     private List<Entry> entrys;
     private Context context;
     private ListView lv;
 
-    public Downloader(Context c, ListView lv){
+    public SubDownloader(Context c, ListView lv){
         this.context = c;
         this.lv = lv;
     }
@@ -94,7 +92,7 @@ public class Downloader extends AsyncTask<String, Integer, List<Entry>> {
             Log.d(TAG, "Contenu du body : " + body);*/
 
             //Parsing
-            RSSParser parser = new RSSParser();
+            RSSSubParser parser = new RSSSubParser();
             entrys = parser.parse(is);
 
 

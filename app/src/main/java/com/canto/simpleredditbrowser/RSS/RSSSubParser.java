@@ -15,14 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RSSParser{
+public class RSSSubParser {
 
-    private final String TAG = "RSSParser";
+    private final String TAG = "RSSSubParser";
 
-    List<Entry> entrys= new ArrayList<Entry>();
-    Entry entry;
-    Author author;
-    String text;
+    private List<Entry> entrys= new ArrayList<Entry>();
+    private Entry entry;
+    private Author author;
+    private String text;
 
     public List<Entry> getEntrys() {
         return entrys;
@@ -38,8 +38,8 @@ public class RSSParser{
 
 
             parser.setInput(is, "UTF-8");
-
             int eventType = parser.getEventType();
+
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 //Log.d(TAG, "boucle while");
                 String tagName = parser.getName();

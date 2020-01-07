@@ -8,12 +8,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.canto.simpleredditbrowser.RSS.CommentsDownloader;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -22,6 +24,8 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+
+import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
 
@@ -53,12 +57,17 @@ public class CommentActivity extends AppCompatActivity {
         ImageView thumbnail = (ImageView) findViewById(R.id.entryThumbnail);
         Button btnReply = (Button) findViewById(R.id.postReplyBtn);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBarEntry);
+        ProgressBar commentsProgressBar = (ProgressBar) findViewById(R.id.progressBarComments);
+        ListView commentsListView = (ListView) findViewById(R.id.commentsListView);
 
         textTitle.setText(entryTitle);
         textAuthor.setText(entryAuthor);
         textUpdated.setText(entryUpdated);
 
         displayImage(entryThumbnail, thumbnail, progressBar);
+
+        CommentsDownloader downloader = new CommentsDownloader(entryLink, CommentActivity.this, commentsListView, commentsProgressBar);
+        downloader.execute();
 
     }
 

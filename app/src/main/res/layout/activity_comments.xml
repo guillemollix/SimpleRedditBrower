@@ -59,7 +59,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_below="@+id/entryTitle"
                     android:text="Author"
-                    android:textSize="6dp"/>
+                    android:textSize="9dp"/>
 
                 <TextView
                     android:id="@+id/entryDateTime"
@@ -68,7 +68,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_below="@id/entryAuthor"
                     android:text="DateTime"
-                    android:textSize="6dp"/>
+                    android:textSize="9dp"/>
 
             </RelativeLayout>
 

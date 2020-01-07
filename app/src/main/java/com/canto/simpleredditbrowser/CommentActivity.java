@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +52,7 @@ public class CommentActivity extends AppCompatActivity {
         entryUpdated = incomingIntent.getStringExtra("@string/entry_updated");
         entryThumbnail = incomingIntent.getStringExtra("@string/entry_thumbnail");
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         TextView textTitle = (TextView) findViewById(R.id.entryTitle);
         TextView textAuthor = (TextView) findViewById(R.id.entryAuthor);
         TextView textUpdated = (TextView) findViewById(R.id.entryDateTime);
@@ -61,8 +63,17 @@ public class CommentActivity extends AppCompatActivity {
         ListView commentsListView = (ListView) findViewById(R.id.commentsListView);
 
         textTitle.setText(entryTitle);
+        toolbar.setTitle(entryTitle);
         textAuthor.setText(entryAuthor);
         textUpdated.setText(entryUpdated);
+        thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CommentActivity.this, WebActivity.class);
+                intent.putExtra("@string/web_url", entryLink);
+                CommentActivity.this.startActivity(intent);
+            }
+        });
 
         displayImage(entryThumbnail, thumbnail, progressBar);
 

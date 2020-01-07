@@ -7,6 +7,8 @@
     <string name="entry_author">author</string>
     <string name="entry_thumbnail">thumbnail</string>
 
+    <string name="web_url">url</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

@@ -8,6 +8,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,19 +16,34 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = "MainActivity";
+    private static final String FILE_NAME = "my_subs.txt";
     private DrawerLayout drawer;
+    DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +75,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Rend utilisable la barre de recherche du Drawer
         Button searchButton = (Button) navigationView.getHeaderView(0).findViewById(R.id.search_button);
         final EditText searchBar = navigationView.getHeaderView(0).findViewById(R.id.search_bar);
+        final SubMenu subMenu = navigationView.getMenu().addSubMenu("My Subreddits");
+
+        //Initialisation de la base de données pour l'historique
+        dataBaseHelper = new DataBaseHelper(this);
+        List<String> subs = retrieveHistory();
+        for(String sub : subs){
+            subMenu.add(sub);
+        }
+
         searchButton.setOnClickListener(new View.OnClickListener() { //Avec le bouton
             @Override
             public void onClick(View v) {
                 String subSearched = "r/" + searchBar.getText();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment(subSearched)).commit();
                 toolbar.setTitle(subSearched);
+                subMenu.add(subSearched);
+                dataBaseHelper.addData(subSearched);
+
             }
         });
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -74,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     String subSearched = "r/" + searchBar.getText();
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment(subSearched)).commit();
                     toolbar.setTitle(subSearched);
+                    subMenu.add(subSearched);
+                    dataBaseHelper.addData(subSearched);
                     return true;
                 }
                 return false;
@@ -104,6 +134,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_random:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment("r/random")).commit();
                 toolbar.setTitle("r/random");
+                break;
+
+            default:
+                String subName = menuItem.getTitle().toString();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment(subName)).commit();
+                toolbar.setTitle(subName);
                 break;
         }
 
@@ -146,9 +182,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FeedFragment(title)).commit();
                 }
+                break;
+
+            case R.id.toolbar_menu1:
+                dataBaseHelper.deleteAll();
+                Toast toast = Toast.makeText(this, "Restart the app to validate", Toast.LENGTH_LONG);
+                toast.show();
+
         }
 
-
         return super.onOptionsItemSelected(item);
+    }
+
+    public List<String> retrieveHistory(){
+        Cursor data = dataBaseHelper.getData();
+        List<String> subs = new ArrayList<>();
+        while (data.moveToNext()){
+            subs.add(data.getString(1));
+        }
+        return subs;
     }
 }

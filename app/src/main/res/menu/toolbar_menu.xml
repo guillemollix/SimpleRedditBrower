@@ -8,15 +8,8 @@
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/toolbar_menu1"
-    android:title="More button"
+    android:title="Erase history"
     app:showAsAction="never"/>
 
-    <item android:id="@+id/toolbar_menu2"
-        android:title="More button"
-        app:showAsAction="never"/>
-
-    <item android:id="@+id/toolbar_menu3"
-        android:title="More button"
-        app:showAsAction="never"/>
 
 </menu>

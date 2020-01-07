@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubDownloader extends AsyncTask<String, Integer, List<Entry>> {
@@ -128,14 +129,6 @@ public class SubDownloader extends AsyncTask<String, Integer, List<Entry>> {
                     context.startActivity(intent);
                 }
             });
-        }
-        else{
-            Entry entry = new Entry();
-            entry.setTitle("Aucun post à afficher :(");
-            entry.setThumbnail("https://fcw.com/-/media/GIG/FCWNow/2015/05/0511reddit_user.PNG");
-            entrys.add(entry);
-            ListAdapter adapter = new ListAdapter(context, R.layout.card_view_layout, entrys);
-            lv.setAdapter(adapter);
         }
     }
 }
